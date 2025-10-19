@@ -1,9 +1,9 @@
-## 🧩 8-Puzzle Problem Solver (Java Implementation)
+## 🧩 N-Puzzle Problem Solver (Java Implementation)
 
 ### 📖 Introduction
 
-The **8-Puzzle Problem** is a classic example of a state-space search problem in **Artificial Intelligence** and **Graph Theory**.  
-It consists of a 3×3 grid containing eight numbered tiles and one empty space.  
+The **N-Puzzle Problem** is a generalization of the classic **8-Puzzle Problem**, a well-known example of a state-space search problem in **Artificial Intelligence** and **Graph Theory**.  
+It consists of an \( N x N \) grid containing numbered tiles and one empty space.  
 The goal is to move the tiles by sliding them into the empty space until the configuration matches a predefined goal state.
 
 From a **graph-theoretic** perspective:
@@ -11,7 +11,7 @@ From a **graph-theoretic** perspective:
 - Each legal tile movement represents an **edge (transition)** between states.  
 - Solving the puzzle becomes equivalent to **finding the shortest path** from an initial node to the goal node.
 
-This project implements a modular **Java-based 8-puzzle solver**, emphasizing low-level control, immutability, and algorithmic clarity rather than high abstraction.
+This project implements a modular **Java-based N-Puzzle solver**, emphasizing low-level control, immutability, and algorithmic clarity rather than high abstraction.
 
 ---
 
@@ -32,7 +32,7 @@ Puzzle/
 ### ⚙️ Class and Function Overview
 
 #### **1️⃣ Board.java**
-The heart of the implementation. It represents the puzzle board as a 2D matrix and provides methods for manipulation and state evaluation.
+Represents the puzzle board as a 2D matrix and provides methods for manipulation and state evaluation. The class is designed to support any \( N x N \) board size, not just 3x3.
 
 **Key Functions:**
 - `Board(int[][] board, int emptyX, int emptyY)`  
@@ -54,10 +54,12 @@ The heart of the implementation. It represents the puzzle board as a 2D matrix a
   Boolean checks to ensure move validity.
 
 - `numberOfMismatchedTiles(Board goal)`  
-  Simple heuristic: counts the number of misplaced tiles compared to the goal state.
+  Heuristic that counts the number of misplaced tiles compared to the goal state.
 
 - `equals()` and `hashCode()`  
   Overridden for use in hash-based data structures during graph traversal.
+
+This class ensures scalability from **8-puzzle (3x3)** to **15-puzzle (4x4)** or even higher-dimensional variants.
 
 ---
 
@@ -74,22 +76,27 @@ Used for clarity, compile-time safety, and clean switch-based movement handling 
 ---
 
 #### **3️⃣ Game.java**
-Implements the **A\*** search algorithm to find the shortest sequence of moves from the initial state to the goal state.
+Implements the **A*** search algorithm to find the shortest sequence of moves from the initial state to the goal state.
 
 **Key Highlights:**
 - Uses **priority queues** to always expand the most promising node based on the cost function `f(n) = g(n) + h(n)`.
 - `g(n)` = cost to reach the current node.  
-  `h(n)` = number of misplaced tiles
+  `h(n)` = heuristic estimate (number of misplaced tiles or Manhattan distance).
 - Tracks visited states to prevent redundant exploration.
 - Returns the optimal path of moves once the goal configuration is reached.
 
-This class serves as the AI brain of the project, demonstrating how **search algorithms** from graph theory can be applied in practical problem solving.
+This class serves as the AI core of the project, demonstrating how **graph search algorithms** can efficiently solve variable-sized N-puzzle problems.
 
 ---
 
 #### **4️⃣ Main.java**
 Acts as the **program’s entry point**.  
 It initializes the board, invokes the A* search from `Game.java`, and prints the resulting move sequence and statistics to the console.
+
+You can modify this file to:
+- Test different board sizes (e.g., 3x3, 4x4, 5x5)
+- Set custom initial and goal configurations
+- Compare heuristics and performance metrics
 
 ---
 
@@ -105,13 +112,13 @@ It initializes the board, invokes the A* search from `Game.java`, and prints the
    java Puzzle.Main
    ```
 
-3. **Edit the initial and goal configurations** in `Main.java` to test different puzzles.
+3. **Edit the initial and goal configurations** in `Main.java` to test different puzzle sizes and arrangements.
 
 ---
 
 ### 🧠 Philosophy and Design Choice
 
-This project was implemented in **Java** — deliberately — to challenge the common belief that complex algorithmic problems like the 8-puzzle are more feasible or convenient only in **highly abstracted languages** such as Python.
+This project was implemented in **Java** — deliberately — to challenge the common belief that complex algorithmic problems like the N-puzzle are more feasible or convenient only in **highly abstracted languages** such as Python.
 
 - Java offers **explicit control over memory, type safety, and object mutability**, crucial for understanding how search algorithms operate internally.
 - This reinforces **fundamental CS concepts** such as:
@@ -126,10 +133,10 @@ By maintaining both **clarity** and **rigorous structure**, this project demonst
 
 ### 🧩 Graph Theory Representation
 
-The 8-puzzle problem can be viewed as a **graph traversal problem**:
+The N-puzzle problem can be viewed as a **graph traversal problem**:
 
 ```
-(Node) 123405678   → represents a board configuration
+(Node) 123456780   → represents a board configuration
 (Edge)  Move Up / Move Left / Move Down / Move Right
 ```
 
@@ -142,15 +149,16 @@ Initial State  →  Intermediate States  →  Goal State
    Node A ───► Node B ───► Node C ───► Node D
 ```
 
-The A* algorithm ensures that the path chosen is **optimal**, by balancing both cost and heuristic information.
+The A* algorithm ensures that the path chosen is **optimal**, by balancing both cost and heuristic information. This holds true for any \( N \times N \) puzzle configuration.
 
 ---
 
-### 🧩 Future Enhancements
+### 🚀 Future Enhancements
 - Visualization of the A* search path and state transitions.  
-- Option to choose between **Manhattan** and **Hamming** heuristics.  
+- Option to choose between **Manhattan**, **Hamming**, and **Linear Conflict** heuristics.  
 - **Graph visualization** of states using JavaFX or external libraries.  
-- Integration of **performance metrics** (nodes expanded, time taken, branching factor).
+- Integration of **performance metrics** (nodes expanded, time taken, branching factor).  
+- Support for **random puzzle generation** and solvability checks.
 
 ---
 
@@ -158,4 +166,3 @@ The A* algorithm ensures that the path chosen is **optimal**, by balancing both 
 **Ankur De**  
 B.Tech CSE (Artificial Intelligence)  
 Amrita Vishwa Vidyapeetham
-
